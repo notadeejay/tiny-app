@@ -39,9 +39,9 @@ app.post("/login", (req, res) => {
     res.redirect('/urls')
 });
 
-app.post("/logout", (request, response) => {
-  request.session = null;
-  response.redirect("/");
+app.post("/logout", (req, res) => {
+  res.clearCookie("username", req.body.username)
+  res.redirect("/urls");
   return;
 });
 
