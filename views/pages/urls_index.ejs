@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/header %>
+</head>
+  <title>TinyApp</title>
+</head>
+<body>
+
+  <main>
+     <div>
+        <h1> URLS </h1>
+        <ul>
+        <%  for(key in urls) { %>
+           <form method="POST" action="/urls/9sm5xK/delete"> <li><%= key %> - <%= urls[key] %></li>
+           <a href="/urls/<%-key %>">Edit</a>
+           <input type="submit" value="Delete">
+           </form>
+        <% }; %>
+       </ul>
+       <a href="deadlink">Shorten a new URL</a>
+     </div>
+  </main>
+
+</body>
+</html>
