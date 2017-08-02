@@ -30,7 +30,16 @@ function generateRandomString() {
     return shorty
 }
 
+function findUserEmail (email) {
+  let found = "";
 
+  for (let key in users) {
+    if (users[key].email === email) {
+      found = key
+    }
+  }
+  return found
+}
 
 //store users
 const users = {
@@ -47,7 +56,6 @@ const users = {
 };
 
 
-
 //homepage
 app.get("/", (req, res) => {
     res.end("Hello!");
@@ -61,22 +69,20 @@ app.get("/login", (req, res) => {
 
 //login
 app.post("/login", (req, res) => {
-const email = req.body.email;
-const password = req.body.password;
+  const email = req.body.email;
+  const password = req.body.password;
+  let foundID = findUserEmail(email);
 
-for (let user in users) {
-  if (users[user].email !== email) {
-    res.statusCode = 403;
-    res.end("The email you entered cannot be found.");
-  } else if (users[user].password !== password) {
-    res.statusCode = 403;
-    res.end("Password does not match");
-  } else {
-    res.cookie('user_ID')
-    res.redirect('/urls')
+    if (!foundID) {
+        res.statusCode = 403;
+        res.end("The email you entered cannot be found.");
+   } else if (password !== users[foundID].password) {
+       res.statusCode = 403;
+       res.end("The password you entered does not match");
+   } else {
+      res.cookie('user_ID', foundID)
+      res.redirect('/urls')
   }
-}
-
 });
 
 //registration pag
@@ -96,8 +102,8 @@ app.post("/register", (req, res) => {
   res.end ('Enter a valid e-mail and password to register')
  };
 
-for (var user in users) {
-  if(users[user].email !== email) {
+//if email already exists
+ if (findUserEmail(email)) {
   res.statusCode = 400;
   res.end("The email you entered is already registered with an account.");
  } else {
@@ -107,7 +113,6 @@ for (var user in users) {
         password: password
   }
   users[id] = newUser
-  console.log(users);
 
   res.cookie("user_ID", id)
   res.redirect('/urls')
@@ -124,11 +129,11 @@ app.post("/logout", (req, res) => {
 //list the current shortlinks
 app.get("/urls", (req, res) => {
 
-
     let templateVars = {
         urls: urlDatabase,
         user: users[req.cookies["user_ID"]]
     };
+
 
     res.render("./pages/urls_index", templateVars);
 });
