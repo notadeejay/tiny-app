@@ -41,6 +41,16 @@ function findUserEmail (email) {
   return found
 }
 
+function currentUser(req) {
+let currentUser = "";
+  for (let user in users) {
+    if (req.cookies["user_ID"] === user) {
+      currentUser = user
+  }
+  return currentUser;
+ }
+}
+
 //store users
 const users = {
   "userRandomID": {
@@ -122,7 +132,7 @@ app.post("/register", (req, res) => {
 //logout and clear cookies
 app.post("/logout", (req, res) => {
   res.clearCookie("user_ID")
-  res.redirect("/urls");
+  res.redirect("/login");
   return;
 });
 
@@ -134,17 +144,27 @@ app.get("/urls", (req, res) => {
         user: users[req.cookies["user_ID"]]
     };
 
-
-    res.render("./pages/urls_index", templateVars);
+  if (!currentUser(req)) {
+      res.redirect('/login')
+   } else {
+   res.render("./pages/urls_index", templateVars)
+ }
 });
+
+
 
 
 //create new short link
 app.get("/urls/new", (req, res) => {
-    let templateVars = {
-        user: users[req.cookies["user_ID"]]
-    }
-    res.render("./pages/urls_new", templateVars);
+  let templateVars = {
+    user: users[req.cookies["user_ID"]]
+  }
+
+  if (!currentUser(req)) {
+    res.redirect('/login')
+  } else {
+   res.render("./pages/urls_new", templateVars)
+ }
 });
 
 
@@ -172,7 +192,8 @@ app.get("/urls/:id", (req, res) => {
     let templateVars = {
       shortURL: req.params.id,
       longURL: urlDatabase[req.params.id],
-      user: users[req.cookies["user_ID"]] };
+      user: users[req.cookies["user_ID"]]
+    };
 
       res.render("./pages/urls_show", templateVars);
   });
