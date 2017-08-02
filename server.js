@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080; // default port 8080
 const cookieParser = require('cookie-parser')
+const bcrypt = require('bcrypt');
+
 app.use(cookieParser())
 
 app.set("view engine", "ejs");
@@ -90,18 +92,25 @@ app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   let foundID = findUserEmail(email);
-
+  let loginCheck = false
+  let currentUser = "";
 
   if (!foundID) {
-        res.statusCode = 403;
-        res.end("The email you entered cannot be found.");
-   } else if (password !== users[foundID].password) {
-       res.statusCode = 403;
-       res.end("The password you entered does not match");
-   } else {
-      res.cookie('user_ID', foundID)
-      res.redirect('/urls')
-  }
+    res.statusCode = 403;
+    res.end("The email you entered cannot be found.")
+  } else {
+   loginPassed = bcrypt.compareSync(password, users[user].password);
+   currentUser = user;
+ }
+
+ if (loginPassed) {
+  res.cookie('user_ID', foundID)
+  res.redirect('/urls')
+} else {
+  res.status = 401;
+  res.send('Sorry, that email and password combination is incorrect.');
+}
+
 });
 
 //registration pag
@@ -113,6 +122,7 @@ app.get("/register", (req, res) => {
 app.post("/register", (req, res) => {
  let email = req.body.email;
  let password = req.body.password;
+ const hashword = bcrypt.hashSync(password, 10);
  let id = generateRandomString();
 
 // if e-mail and password are empty strings
@@ -129,10 +139,10 @@ app.post("/register", (req, res) => {
  let newUser = {
         id: id,
         email : email,
-        password: password
+        password: hashword
   }
   users[id] = newUser
-
+  console.log(users);
   res.cookie("user_ID", id)
   res.redirect('/urls')
  }
@@ -192,7 +202,7 @@ let templateVars = {
 
 
 app.get("/u/:shortURL", (req, res) => {
-    let longURL = urlDatabase[req.params.shortURL]
+    let longURL = urlDatabase[req.params.shortURL].longURL
     res.redirect(longURL);
 });
 
