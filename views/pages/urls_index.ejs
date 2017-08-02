@@ -1,24 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-</head>
-<body>
-  <% include ../partials/header %>
-
-  <main>
-     <div>
-        <h1> URLS </h1>
-        <ul>
-        <%  for(key in urls) { %>
-           <form method="POST" action="/urls/9sm5xK/delete"> <li><%= key %> - <%= urls[key].longURL %></li>
-           <a href="/urls/<%-key %>">Edit</a>
-           <input type="submit" value="Delete">
-           </form>
-        <% }; %>
-       </ul>
-       <a href="/urls/new">Shorten a new URL</a>
-     </div>
-  </main>
-
-</body>
+  <head>
+    <title>TinyApp</title>
+  </head>
+  <body>
+    <ul style="list-style: none;">
+      <% for (link in urls) {%>
+        <li>
+          <form method="POST" action="/urls/9sm5xK/delete">
+            <%= urls[link].shortURL %> – <%= urls[link].longURL %>
+            <a href="/urls">Edit</a>
+            <button type="submit">Delete 🗑</button>
+          </form>
+        </li>
+      <% } %>
+    </ul>
+    <a href="/urls/new">Create a New Short Link</a>
+  </body>
 </html>

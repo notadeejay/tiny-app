@@ -7,12 +7,12 @@
 
   <main>
      <div>
-        <h1> ShortURL: </h1>
-          <form action= "" method="POST">
+        <h1> Update your LongURL: </h1>
+          <form action= "/urls/<%= shortURL %>" method="POST">
            <label for="updateURL"><%= shortURL %></label>
                 <p></p>
             <input id=updateURL type="text" name=updateURL placeholder="http://" style="width: 300px">
-            <input type="submit" value="Submit New">
+            <input type="submit" value="Update">
           </form>
      </div>
   </main>
