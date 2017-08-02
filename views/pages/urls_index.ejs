@@ -10,13 +10,13 @@
         <h1> URLS </h1>
         <ul>
         <%  for(key in urls) { %>
-           <form method="POST" action="/urls/9sm5xK/delete"> <li><%= key %> - <%= urls[key] %></li>
+           <form method="POST" action="/urls/9sm5xK/delete"> <li><%= key %> - <%= urls[key].longURL %></li>
            <a href="/urls/<%-key %>">Edit</a>
            <input type="submit" value="Delete">
            </form>
         <% }; %>
        </ul>
-       <a href="deadlink">Shorten a new URL</a>
+       <a href="/urls/new">Shorten a new URL</a>
      </div>
   </main>
 

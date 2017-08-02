@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <header>
   <h1>TinyApp</h1>
     <% if (user) { %>                          <!-- if user is logged in -->
@@ -13,19 +12,3 @@
       <a href="/register">Register</a>
     <% } %>
 </header>
-=======
-<title> TinyApp </title>
-
-<% if (username) { %>
-<p> <%= username %> </p>
-<form action="logout" method="POST">
-<input type="submit" value="Logout">
-</form>
-<% }else { %>
-<form action="/login" method="POST">
-      <label for="username">Enter your Username:</label>
-      <input id="username" type="text" name="username" placeholder="Username" style="width: 300px">
-      <input type="submit" value="Sign In">
-</form>
-<% } %>
->>>>>>> master

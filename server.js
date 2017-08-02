@@ -11,8 +11,15 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
 const urlDatabase = {
-    "b2xVn2": "http://www.lighthouselabs.ca",
-    "9sm5xK": "http://www.google.com"
+  "b2xVn2": {
+      "longURL": "http://www.lighthouselabs.ca",
+       "userID": "w18nf2"
+  },
+
+  "9sm5xK": {
+      "longURL": "http://www.google.com",
+       "userID" : "8732ew"
+   }
 };
 
 
@@ -42,14 +49,14 @@ function findUserEmail (email) {
 }
 
 function currentUser(req) {
-let currentUser = "";
   for (let user in users) {
     if (req.cookies["user_ID"] === user) {
-      currentUser = user
+      return user;
   }
-  return currentUser;
- }
 }
+ return "";
+ }
+
 
 //store users
 const users = {
@@ -144,11 +151,7 @@ app.get("/urls", (req, res) => {
         user: users[req.cookies["user_ID"]]
     };
 
-  if (!currentUser(req)) {
-      res.redirect('/login')
-   } else {
    res.render("./pages/urls_index", templateVars)
- }
 });
 
 
@@ -156,15 +159,15 @@ app.get("/urls", (req, res) => {
 
 //create new short link
 app.get("/urls/new", (req, res) => {
-  let templateVars = {
-    user: users[req.cookies["user_ID"]]
-  }
+let templateVars = {
+        user: users[req.cookies["user_ID"]]
+    }
 
-  if (!currentUser(req)) {
-    res.redirect('/login')
-  } else {
-   res.render("./pages/urls_new", templateVars)
- }
+  if (currentUser(req)) {
+     res.render("./pages/urls_new", templateVars);
+   } else {
+    res.redirect('/login');
+  }
 });
 
 
@@ -178,6 +181,7 @@ app.post("/urls", (req, res) => {
     let shortURL = generateRandomString();
     let longURL = req.body.longURL
     urlDatabase[shortURL] = longURL
+
     res.send("Ok");
 });
 
