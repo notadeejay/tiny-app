@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-</head>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
+     <link href="https://fonts.googleapis.com/css?family=Average|Fjalla+One" rel="stylesheet">
+</head>
+<% include ../partials/header %>
 <body>
 
-  <main>
-     <div>
-        <h1> Update your LongURL: </h1>
+
+    <body style="font-size:20px;">
+   <div class='container' style="padding:5%; background-color:#DAE3E5" align="center">
+   <h1 style= "font-family: 'Fjalla One', sans-serif; color:#507DBC"> Tiny App 🎉 </h1>
+   <h3 style = "font-family: 'Average', serif; color:#04080F">Redirect your tiny URL: <a style="color:#9C0D38"> <%= shortURL %></a></h3>
           <form action= "/urls/<%= shortURL %>" method="POST">
-           <label for="updateURL"><%= shortURL %></label>
-                <p></p>
             <input id=updateURL type="text" name=updateURL placeholder="http://" style="width: 300px">
-            <input type="submit" value="Update">
+            <button type="submit" class="btn btn-outline-primary" style="font-family: 'Fjalla One', sans-serif; margin-top:10px">Update</button>
+             <br>
+            <img src ="https://media.giphy.com/media/xT5LMBMErAtt80LNZK/giphy.gif" style="margin-top: 10px">
+
+
           </form>
      </div>
-  </main>
+
 
 </body>
 </html>

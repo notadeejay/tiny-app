@@ -1,12 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head></head>
-  <body style="font-size:20px; padding:50px;">
-    <form action="/register" method="POST" style="margin:150px;">
-      <label for="registration">Registration: </label>
+  <head>
+
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+     <link href="https://fonts.googleapis.com/css?family=Average|Fjalla+One" rel="stylesheet">
+     <link rel="shortcut icon" href="/favicon.ico">
+
+  </head>
+  <body style="font-size:20px;">
+   <div class='container' style="padding:5%; background-color:#DAE3E5" align="center">
+   <h1 style= "font-family: 'Fjalla One', sans-serif; color:#507DBC"> Tiny App 🎉 </h1>
+   <h3 style = "font-family: 'Average', serif; color:#04080F">Register now and start shrinking!</h3>
+   <img src ="https://media.giphy.com/media/fVyQqa7F85IXe/giphy.gif" style="margin-bottom: 10px">
+    <form action="/register" method="POST" style="margin:10px;">
       <input id="email" type="email" name="email" placeholder="E-mail" style="width: 300px">
+      <div>
+      <br>
+      </div>
       <input id="password" type="password" name="password" placeholder="Password" style="width: 300px">
-      <input type="submit" value="Register">
+      <br>
+      <button type="submit" class="btn btn-outline-primary" style="font-family: 'Fjalla One', sans-serif; margin-top:10px">Register now</button>
     </form>
   </body>
 </html>
