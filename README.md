@@ -1,8 +1,5 @@
 # Tiny-App
 
-
-## Project Description
-
 ## Project Description
 
 A fullstack app build with Node and Express that allows users to shorten long URLs (a la bit.ly)
