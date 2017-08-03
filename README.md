@@ -1,6 +1,10 @@
 # Tiny-App
 
-##Project Description
+
+## Project Description
+
+## Project Description
+
 A fullstack app build with Node and Express that allows users to shorten long URLs (a la bit.ly)
 
 
@@ -21,7 +25,10 @@ A fullstack app build with Node and Express that allows users to shorten long UR
 *   _cookie-session_ for session storage
 *   _bcrypt_ for password encryption
 
-##Getting started
+
+
+
+## Getting started
 
 **Install add dependencies using npm install**
 
@@ -33,4 +40,6 @@ A fullstack app build with Node and Express that allows users to shorten long UR
 
       node express_server.js
 
+
 **View the app at localhost:8080**
+
