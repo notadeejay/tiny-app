@@ -33,12 +33,12 @@ const users = {
   "userRandomID": {
     id: "userRandomID",
     email: "user@example.com",
-    password: "456"
+    password: bcrypt.hashSync('123', 10)
   },
  "user2RandomID": {
     id: "user2RandomID",
     email: "user2@example.com",
-    password: "123"
+    password: bcrypt.hashSync('456', 10)
   }
 };
 
@@ -95,7 +95,13 @@ app.get("/", (req, res) => {
 
 //registration page
 app.get("/register", (req, res) => {
+  let userID = currentUser(req)
+
+  if (userID) {
+    res.redirect('/urls/new')
+  } else {
  res.render("./pages/register")
+}
 });
 
 
@@ -155,18 +161,18 @@ app.post("/login", (req, res) => {
     res.send("The email you entered cannot be found.")
   }
 
-  for (var user in users) {
-   loginPassed = bcrypt.compareSync(password, users[user].password);
-   currentUser = user;
+  if (foundID) {
+   loginPassed = bcrypt.compareSync(password, users[foundID].password);
   }
 
   //if the passwords match
   if (loginPassed) {
-    req.session.user_id = users[user].id
+    currentUser = foundID
+    req.session.user_id = users[foundID].id
     res.redirect('/urls')
   } else {
     res.status = 401;
-    res.send('Sorry, that email and password combination is incorrect.');
+    res.send('Sorry, that email and password combination is incorrect. <br><a href="/login">Return</a>');
   }
 
   });
@@ -231,9 +237,23 @@ app.get("/urls/new", (req, res) => {
 
 //redirect the shortURL to it's original longURL
 app.get("/u/:shortURL", (req, res) => {
-    let longURL = urlDatabase[req.params.shortURL].longURL
+  const shortURL = req.params.shortURL;
+  let longURL = "";
+
+  for (link in urlDatabase) {
+    if (urlDatabase[link].shortURL === shortURL) {
+      longURL = urlDatabase[link].longURL;
+    }
+  }
+
+  if (longURL) {
     res.redirect(longURL);
+  } else {
+    res.status(404).send('Sorry, this URL does not exist 🦄');
+  }
+
 });
+
 
 //// /^http:\/\//)
 
@@ -252,7 +272,6 @@ app.post("/urls", (req, res) => {
       userID: users[req.session.user_id].id
   }
 
-console.log(urlDatabase);
     res.redirect('/urls')
 });
 
@@ -270,18 +289,26 @@ app.post("/urls/:id/delete", (req, res) => {
 //look at specific shortlink
 app.get("/urls/:id", (req, res) => {
   let userID = currentUser(req);
-  let templateVars = {
-    shortURL: req.params.id,
-    longURL: urlDatabase[req.params.id],
-    user: users[req.session.user_id],
-    useremail: users[req.session.user_id].email
-  };
-   if (!userID) {
-   return res.send('You need to <a href="/login">login</a>');
-  } else {
+  let templateVars = {};
 
-  res.render("./pages/urls_show", templateVars);
-}
+  if (userID) {
+    if (!urlDatabase[req.params.id]){
+      return res.status(404).send('This Tiny URL does not exist 🦄')
+      //if the URL does not belong to the user
+    } else if (urlDatabase[req.params.id].userID != userID) {
+      return res.send('Sorry, URL does not belong to you 🤷‍')
+    } else {
+      templateVars = {
+      shortURL: req.params.id,
+      longURL: urlDatabase[req.params.id],
+      user: users[req.session.user_id],
+      useremail: users[req.session.user_id].email
+      };
+      res.render("./pages/urls_show", templateVars);
+    }
+  } else {
+    return res.status(401).redirect('/login');
+  }
 });
 
 
@@ -294,9 +321,8 @@ app.post("/urls/:shortURL", (req, res) => {
 
 //make sure user is logged in
   if (!userID) {
-   return res.send('You need to <a href="/login"login</a>');
+   return res.status(401).send('You need to <a href="/login"login</a>');
   }
-
   //make sure the URL belongs to the user
   if (urlDatabase[shortURL].userID != userID) {
     res.send('Sorry, URL does not belong to you.')

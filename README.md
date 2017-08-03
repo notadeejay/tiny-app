@@ -16,7 +16,7 @@ _As an_ avid twitter poster,
 _I want_ to be able to shorten links
 _so that_ I can fit more non-link text in my tweets.
 
-*   _When_ I visit `http://localhost:3000/`
+*   _When_ I visit `http://localhost:8080/`
     _Then_ I see a form which contains a field to submit a URL and a button
 
 *   _When_ I fill in the form with a URL and submit it
@@ -26,7 +26,7 @@ _As an_ avid twitter poster,
 _I want_ to be able to see how many times my subscribers visit my links
 _so that_ I can learn what content they like.
 
-*   _When_ I visit `http://localhost:3000/`
+*   _When_ I visit `http://localhost:8080/`
     _Then_ I see a login form
 
 *   _When_ I submit the login form _Then_ I am logged in
@@ -48,6 +48,7 @@ _so that_ I can read interesting content.
         *   redirect -> `/urls`
     *   if user is not logged in:
         *   redirect -> `/login`
+
 *   `GET /urls`
 
     *   if user is not logged in:
@@ -77,7 +78,6 @@ _so that_ I can read interesting content.
             *   text input field for the original URL
             *   submit button -> `POST /urls`
 *   `GET /urls/:id`
-
     *   if url w/ `:id` does not exist:
         *   returns a 404 response, HTML with a relevant error message
     *   if user is not logged in:
@@ -95,20 +95,17 @@ _so that_ I can read interesting content.
             *   "update" button -> `POST /urls/:id`
             *   "delete" button -> `POST /urls/:id/delete`
 *   `GET /u/:id`
-
     *   if url with `:id` exists:
         *   redirect -> the corresponding longURL
     *   otherwise:
         *   returns a 404 response, HTML with a relevant error message
 *   `POST /urls`
-
     *   if user is logged in:
         *   generates a shortURL, saves the link and associates it with the user
         *   redirect -> `/urls/:id`
     *   if user is not logged in:
         *   returns a 401 response, HTML with a relevant error message and a link to `/login`
 *   `POST /urls/:id`
-
     *   if url with `:id` does not exist:
         *   returns a 404 response, HTML with a relevant error message
     *   if user is not logged in:
@@ -137,7 +134,6 @@ _so that_ I can read interesting content.
             *   input fields for email and password
             *   "register" button -> `POST /register`
 *   `POST /register`
-
     *   if email or password are empty:
         *   returns a 400 response, with a relevant error message
     *   if email already exists:
@@ -148,7 +144,6 @@ _so that_ I can read interesting content.
         *   sets a cookie
         *   redirect -> `/`
 *   `POST /login`
-
     *   if email & password params match an existing user:
         *   sets a cookie
         *   redirect -> `/`
@@ -159,7 +154,6 @@ _so that_ I can read interesting content.
     *   deletes cookie
     *   redirect -> `/`
 *   THE SITE HEADER:
-
     *   if a user is logged in, the header shows:
         *   user's email
         *   "My Links" link -> `/urls`
