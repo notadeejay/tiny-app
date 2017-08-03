@@ -3,14 +3,18 @@ const app = express();
 const PORT = process.env.PORT || 8080; // default port 8080
 var cookieSession = require('cookie-session')
 const bcrypt = require('bcrypt');
+const bodyParser = require("body-parser");
+const morgan = require('morgan')
+var methodOverride = require('method-override')
 app.set("view engine", "ejs");
+app.use(morgan('dev'))
 app.use(cookieSession({
   name: 'session',
   keys: ['ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'],
 
 }))
+app.use(methodOverride('_method'))
 
-const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
 
@@ -220,12 +224,14 @@ app.get("/urls", (req, res) => {
 
 //create new short link
 app.get("/urls/new", (req, res) => {
-  let templateVars = {
+  let templateVars = {}
+  let userID = currentUser(req);
+
+  if (userID) {
+   templateVars = {
     user: users[req.session.user_id],
     useremail: users[req.session.user_id].email
   }
-
-  if (currentUser(req)) {
      res.render("./pages/urls_new", templateVars);
    } else {
     res.redirect('/login');
@@ -278,10 +284,18 @@ app.post("/urls", (req, res) => {
 
 
 //delete from database
-app.post("/urls/:id/delete", (req, res) => {
+app.delete("/urls/:id", (req, res) => {
   let shortURL = req.params.id
-  delete urlDatabase[shortURL]
-  res.redirect("/urls");
+  let userID = currentUser(req);
+
+  debugger
+  if (userID) {
+    delete urlDatabase[req.params.id]
+    res.redirect("/urls");
+  } else {
+    res.status(403).send('403: You are not allowed to delete this');
+}
+
 });
 
 

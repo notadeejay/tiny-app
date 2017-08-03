@@ -21,7 +21,8 @@
     <ul style="list-style: none;">
       <% for (link in urls) {%>
         <li>
-          <form method="POST" action="/urls/<%= urls[link].shortURL %>/delete">
+          <form method="POST" action="/urls/<%= urls[link].shortURL %>?_method=DELETE">
+            <input type="hidden" name="_method" value="DELETE">
             <%= urls[link].shortURL %> links to: <a style="color:#9C0D38"> <%= urls[link].longURL %> </a>
             <br>
             <button type="link" class="btn btn-outline-primary">
