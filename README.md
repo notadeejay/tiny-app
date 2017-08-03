@@ -23,13 +23,14 @@ A fullstack app build with Node and Express that allows users to shorten long UR
 
 ##Getting started
 
-####Install add dependencies using npm install
+**Install add dependencies using npm install**
   
-<pre>`npm install <dependencies> --save`<code>
+
+     npm install <dependencies> --save
 
   
-####Run the development web server using
+**Run the development web server using**
 
-    node express_server.js
+      node express_server.js
 
-####View the app at localhost:8080
+**View the app at localhost:8080**
