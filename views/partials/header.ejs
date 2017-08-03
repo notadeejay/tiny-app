@@ -4,8 +4,8 @@
     <% if (user) { %>                          <!-- if user is logged in -->
       <form method="POST" action="/logout" align= "right", style="padding-right:20px;">
         <h3>
-          <a href="/urls" style="font-family: 'Average', serif; color:#04080F"; margin-right:20px">My links</a>
-          <button type="submit" class="btn btn-outline-primary" style="font-family: 'Fjalla One', sans-serif;">Logout</button>
+          <button type="submit" class="btn btn-outline-secondary btn-sm" style="font-family: 'Fjalla One', sans-serif; margin-right:5px;"><a href="/urls" style= "text-decoration:none;"><%= useremail%>'s links</a>
+          <button type="submit" class="btn btn-outline-secondary btn-sm" style="font-family: 'Fjalla One', sans-serif;">Logout</button>
         </h3>
       </form>
     <% } else { %>                                <!-- else user is logged out -->
