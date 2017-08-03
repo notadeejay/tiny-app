@@ -1,12 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head></head>
-  <body style="font-size:20px; padding:50px;">
-    <% include ../partials/header %>
-    <form action="/urls" method="POST" style="margin:150px;">
-      <label for="longURL">Enter a URL:</label>
+  <head>
+
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+     <link href="https://fonts.googleapis.com/css?family=Average|Fjalla+One" rel="stylesheet">
+
+  </head>
+  <body>
+  <% include ../partials/header %>
+  <div class='container' align= 'center' style="padding:200px; background-color:#DAE3E5">
+  <h1 style= "font-family: 'Fjalla One', sans-serif; color:#507DBC"> Tiny App </h1>
+
+  <h3 style = "font-family: 'Average', serif; color:#04080F"> Shorten your URLS 🎉 </h3>
+    <form action="/urls" method="POST">
+      <label for = "input" style="font-family: 'Average', serif; color:#04080F">Enter a URL:</label>
       <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
-      <input type="submit" value="Submit">
+      <button type="submit" class="btn btn-outline-primary" style="font-family: 'Fjalla One', sans-serif;"">Submit</button>
     </form>
+    <br>
+    <h3 style = "font-family: 'Average', serif; color:#04080F">Make your URL this big</h3>
+    <img src ="https://media.giphy.com/media/km2mais9qzYI/giphy.gif">
+    </div>
   </body>
 </html>

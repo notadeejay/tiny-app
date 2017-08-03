@@ -1,14 +1,15 @@
+
 <header>
-  <h1>TinyApp</h1>
+<Title> Tiny App </title>
     <% if (user) { %>                          <!-- if user is logged in -->
-      <form method="POST" action="/logout">
+      <form method="POST" action="/logout" align= "right", style="padding-right:20px;">
         <h3>
-          <a href="/urls">My Links</a>
-          <input type="submit" value="Logout">
+          <a href="/urls" style="font-family: 'Average', serif; color:#04080F"; margin-right:20px">My links</a>
+          <button type="submit" class="btn btn-outline-primary" style="font-family: 'Fjalla One', sans-serif;">Logout</button>
         </h3>
       </form>
     <% } else { %>                                <!-- else user is logged out -->
-      <a href="/login">Login</a>
-      <a href="/register">Register</a>
+      <a href="/urls" style="font-family: 'Average', serif; color:#04080F"; margin-right:20px">Login</a>
+      <a href="/urls" style="font-family: 'Average', serif; color:#9C0D38"; margin-right:20px">Register</a>
     <% } %>
 </header>
