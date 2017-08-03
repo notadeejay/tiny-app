@@ -7,31 +7,36 @@
 
      <link href="https://fonts.googleapis.com/css?family=Average|Fjalla+One" rel="stylesheet">
 
-  </head>
-  <body style= "font-family:'Average', serif; color:#04080F">
+</head>
 
-   <div class='container' id="customColors">
+<body style= "font-family:'Average', serif; color:#04080F">
 
     <% include ../partials/header %>
-  <div class='container' style="padding:5%; background-color:#DAE3E5">
-  <h1 style= "font-family: 'Fjalla One', sans-serif; color:#507DBC"> Tiny App 🎉 </h1>
+      <div class='container' style="padding:5%; background-color:#DAE3E5">
 
-  <h3 style = "font-family: 'Average', serif; color:#04080F">URLs so small, they got you like:</h3>
-  <img src ="https://media.giphy.com/media/JUh0yTz4h931K/giphy.gif" style="margin-top: 20px">
-    <ul style="list-style: none;">
-      <% for (link in urls) {%>
-        <li>
-          <form method="POST" action="/urls/<%= urls[link].shortURL %>?_method=DELETE">
-            <input type="hidden" name="_method" value="DELETE">
-            <p>  <a href= "/u/<%= urls[link].shortURL %>"><%= urls[link].shortURL %> </a>  links to: <a style="color:#9C0D38"> <%= urls[link].longURL %> </a> </p>
-            <a href="/urls/<%= urls[link].shortURL %>" style="font-family: 'Fjalla One', sans-serif; text-decoration: none;""> Edit 📝</a>
-            <button type="submit" class="btn btn-outline-primary" style="font-family: 'Fjalla One', sans-serif; margin-top:10px">Delete 🗑</button>
-          </form>
-        </li>
-      <% } %>
-    </ul>
-    <br>
-    <br>
-    <button type="button" class="btn btn-outline-primary btn-lg"; padding: 5px;"><a href="/urls/new" style = "font-family: 'Fjalla One', sans-serif; color:#9C0D38; text-decoration:none;">Create a New Short Link</a>
+          <h1 style= "font-family: 'Fjalla One', sans-serif; color:#507DBC"> Tiny App 🎉 </h1>
+
+          <h3 style = "font-family: 'Average', serif; color:#04080F">URLs so small, they got you like:</h3>
+          <img src ="https://media.giphy.com/media/JUh0yTz4h931K/giphy.gif" style="margin-top: 20px">
+
+<!-- LIST OF USERS URLS -->
+
+                <% for (link in urls) {%>
+                  <table cellspacing="10">
+                      <form method="POST" action="/urls/<%= urls[link].shortURL %>?_method=DELETE">
+                          <tbody>
+                              <tr>
+                                <td><a href= "/u/<%= urls[link].shortURL %>"><%= urls[link].shortURL %></a></td>
+                                <td><a style="color:#9C0D38"> <%= urls[link].longURL %></a></td>
+                                <td><a href="/urls/<%= urls[link].shortURL %>" style="font-family: 'Fjalla One', sans-serif; text-decoration: none;""> Edit 📝</a></td>
+                                <td><button type="submit" class="btn btn-outline-primary" style="font-family: 'Fjalla One', sans-serif;">Delete 🗑</button></td>
+                            </tr>
+                          </tbody>
+                      </form>
+                  </table>
+                <% } %>
+
+              <br>
+      <button type="button" class="btn btn-outline-primary btn-lg"; padding: 5px;"><a href="/urls/new" style = "font-family: 'Fjalla One', sans-serif; color:#9C0D38; text-decoration:none;">Create a New Short Link</a>
   </body>
 </html>

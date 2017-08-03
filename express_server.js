@@ -90,7 +90,14 @@ function currentUser(req) {
 
 //Homepage
 app.get("/", (req, res) => {
-    res.send('Hello!')
+  let userID = currentUser(req)
+
+  if (userID) {
+    res.redirect('/urls')
+  } else {
+      res.redirect('/login')
+  }
+
 });
 
 
@@ -176,7 +183,7 @@ app.post("/login", (req, res) => {
       res.redirect('/urls')
   } else {
       res.status = 401;
-      res.send('Sorry, that email and password combination is incorrect. <br><a href="/login">Return</a>');
+      res.send('Sorry, that email and password combination is incorrect. <br><a href="/login">Return</a> 🔒');
   }
 
 });
@@ -198,12 +205,12 @@ app.get("/urls", (req, res) => {
   let linksArray = [];
   let userID = currentUser(req);
 
-  //check if the user is logged in
+  //Check if the user is logged in
   if (!userID) {
-   return res.send('You need to <a href="/login">login</a>');
+   return res.status(401).send('You need to <a href="/login">login</a> 🔒');
   }
 
-  //shows only the users unique links
+  //Shows only the users unique links
   for (let link in urlDatabase) {
     if (urlDatabase[link].userID === userID) {
      linksArray.push(urlDatabase[link])
@@ -222,7 +229,7 @@ app.get("/urls", (req, res) => {
 
 
 
-//create new short link
+//Create new short link
 app.get("/urls/new", (req, res) => {
   let templateVars = {}
   let userID = currentUser(req);
@@ -241,7 +248,7 @@ app.get("/urls/new", (req, res) => {
 
 
 
-//redirect the shortURL to it's original longURL
+//Redirect the shortURL to it's original longURL
 app.get("/u/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   let longURL = "";
@@ -261,13 +268,15 @@ app.get("/u/:shortURL", (req, res) => {
 });
 
 
-//// /^http:\/\//)
 
-//add new short URL pairing to database
+
+//Add new short URL pairing to database
 app.post("/urls", (req, res) => {
     let shortURL = generateRandomString();
     let longURL = req.body.longURL
 
+
+//If the URL does not include http:// or https://
     if (!longURL.match(/^https?:\/\//)) {
       longURL = 'https://' + longURL
     }
@@ -276,30 +285,30 @@ app.post("/urls", (req, res) => {
       longURL : longURL,
       shortURL: shortURL,
       userID: users[req.session.user_id].id
-  }
+   }
 
     res.redirect('/urls')
 });
 
 
 
-//delete from database
+//Delete
 app.delete("/urls/:id", (req, res) => {
   let shortURL = req.params.id
   let userID = currentUser(req);
 
   if (userID) {
-    delete urlDatabase[req.params.id]
-    res.redirect("/urls");
+      delete urlDatabase[req.params.id]
+      res.redirect("/urls");
   } else {
-    res.status(403).send('403: You are not allowed to delete this');
-}
+      res.status(403).send('You are not allowed to delete this');
+  }
 
 });
 
 
 
-//look at specific shortlink
+//Edit
 app.get("/urls/:id", (req, res) => {
   let userID = currentUser(req);
   let templateVars = {};
@@ -326,19 +335,19 @@ app.get("/urls/:id", (req, res) => {
 
 
 
-//edit the longURL for a given shortURL
+//Update longURL
 app.put("/urls/:shortURL", (req, res) => {
   let userID = currentUser(req);
   let shortURL = req.params.shortURL
   let longURL = req.body.updateURL
 
-//make sure user is logged in
+  //Login check
   if (!userID) {
-   return res.status(401).send('You need to <a href="/login"login</a>');
+   return res.status(401).send('You need to <a href="/login"login</a> 🔒');
   }
-  //make sure the URL belongs to the user
+  //If did the user create this URL
   if (urlDatabase[shortURL].userID != userID) {
-    res.send('Sorry, URL does not belong to you.')
+    res.send('Sorry, URL does not belong to you 🙅‍')
   } else {
     urlDatabase[shortURL]['longURL'] = longURL
     res.redirect('/urls')
