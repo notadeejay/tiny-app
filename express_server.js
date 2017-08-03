@@ -13,8 +13,8 @@ app.use(cookieSession({
   keys: ['ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'],
 
 }))
-app.use(methodOverride('_method'))
 
+app.use(methodOverride('_method'))
 app.use(bodyParser.urlencoded({extended: true}));
 
 
@@ -76,8 +76,7 @@ function findUserEmail (email) {
 }
 
 
-
-//Identifies the current user's cookie
+//Validate the current user
 function currentUser(req) {
   for (let user in users) {
     if (req.session.user_id === user) {
@@ -89,7 +88,7 @@ function currentUser(req) {
 
 
 
-//homepage
+//Homepage
 app.get("/", (req, res) => {
     res.send('Hello!')
 });
@@ -97,36 +96,36 @@ app.get("/", (req, res) => {
 
 
 
-//registration page
+//Registration page
 app.get("/register", (req, res) => {
   let userID = currentUser(req)
 
-  if (userID) {
-    res.redirect('/urls/new')
-  } else {
- res.render("./pages/register")
-}
+    //If they are already registered, redirect
+    if (userID) {
+      res.redirect('/urls/new')
+    } else {
+     res.render("./pages/register")
+    }
+
 });
 
 
 
-//register for an acct
+//Register for an account
 app.post("/register", (req, res) => {
  let email = req.body.email;
  let password = req.body.password;
  const hashword = bcrypt.hashSync(password, 10);
  let id = generateRandomString();
 
-  // if e-mail and password are empty strings
+  // If e-mail and password are empty strings, return error
   if (!(email && password)) {
-    res.statusCode = 401
-    res.send('Enter a valid e-mail and password to register')
+    res.status(401).send('Enter a valid e-mail and password to register 😕')
   };
 
-  //if email already exists
+  //If the e-mail already exists
   if (findUserEmail(email)) {
-    res.statusCode = 401;
-    res.send("The email you entered is already registered with an account.");
+    res.status(401).send("The email you entered is already registered with an account 🚫");
   } else {
    let newUser = {
     id: id,
@@ -134,9 +133,9 @@ app.post("/register", (req, res) => {
     password: hashword
   }
 
-  users[id] = newUser
-  req.session.user_id = id
-  res.redirect('/urls')
+    users[id] = newUser
+    req.session.user_id = id
+    res.redirect('/urls')
 
   }
 
@@ -144,14 +143,14 @@ app.post("/register", (req, res) => {
 
 
 
-//login page
+//Login page
 app.get("/login", (req, res) => {
  res.render("./pages/login")
 });
 
 
 
-//logging in using e-mail and password
+//Logging in using e-mail and password
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -159,31 +158,32 @@ app.post("/login", (req, res) => {
   let loginCheck = false
   let currentUser = "";
 
-  //checking for e-mail in the database
+  //If the e-mail does not exist in the database
   if (!foundID) {
     res.statusCode = 403;
     res.send("The email you entered cannot be found.")
   }
 
+ //If the e-mail does exist in the database, compare passwords
   if (foundID) {
    loginPassed = bcrypt.compareSync(password, users[foundID].password);
   }
 
-  //if the passwords match
+  //If passwords are a match
   if (loginPassed) {
-    currentUser = foundID
-    req.session.user_id = users[foundID].id
-    res.redirect('/urls')
+      currentUser = foundID
+      req.session.user_id = users[foundID].id
+      res.redirect('/urls')
   } else {
-    res.status = 401;
-    res.send('Sorry, that email and password combination is incorrect. <br><a href="/login">Return</a>');
+      res.status = 401;
+      res.send('Sorry, that email and password combination is incorrect. <br><a href="/login">Return</a>');
   }
 
-  });
+});
 
 
 
-//logout and clear cookies
+//Logout and clear cookies
 app.post("/logout", (req, res) => {
   req.session = null
   res.redirect("/login");
@@ -192,7 +192,7 @@ app.post("/logout", (req, res) => {
 
 
 
-//list the users shortlinks
+//List the users shortlinks
 app.get("/urls", (req, res) => {
   let templateVars = {};
   let linksArray = [];
@@ -288,7 +288,6 @@ app.delete("/urls/:id", (req, res) => {
   let shortURL = req.params.id
   let userID = currentUser(req);
 
-  debugger
   if (userID) {
     delete urlDatabase[req.params.id]
     res.redirect("/urls");
@@ -328,7 +327,7 @@ app.get("/urls/:id", (req, res) => {
 
 
 //edit the longURL for a given shortURL
-app.post("/urls/:shortURL", (req, res) => {
+app.put("/urls/:shortURL", (req, res) => {
   let userID = currentUser(req);
   let shortURL = req.params.shortURL
   let longURL = req.body.updateURL

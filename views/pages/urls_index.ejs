@@ -23,10 +23,8 @@
         <li>
           <form method="POST" action="/urls/<%= urls[link].shortURL %>?_method=DELETE">
             <input type="hidden" name="_method" value="DELETE">
-            <%= urls[link].shortURL %> links to: <a style="color:#9C0D38"> <%= urls[link].longURL %> </a>
-            <br>
-            <button type="link" class="btn btn-outline-primary">
-            <a href="/urls/<%= urls[link].shortURL %>" style="font-family: 'Fjalla One', sans-serif; text-decoration: none;""> Edit 📝</a></button>
+            <p>  <a href= "/u/<%= urls[link].shortURL %>"><%= urls[link].shortURL %> </a>  links to: <a style="color:#9C0D38"> <%= urls[link].longURL %> </a> </p>
+            <a href="/urls/<%= urls[link].shortURL %>" style="font-family: 'Fjalla One', sans-serif; text-decoration: none;""> Edit 📝</a>
             <button type="submit" class="btn btn-outline-primary" style="font-family: 'Fjalla One', sans-serif; margin-top:10px">Delete 🗑</button>
           </form>
         </li>

@@ -13,7 +13,7 @@
    <div class='container' style="padding:5%; background-color:#DAE3E5" align="center">
    <h1 style= "font-family: 'Fjalla One', sans-serif; color:#507DBC"> Tiny App 🎉 </h1>
    <h3 style = "font-family: 'Average', serif; color:#04080F">Redirect your tiny URL: <a style="color:#9C0D38"> <%= shortURL %></a></h3>
-          <form action= "/urls/<%= shortURL %>" method="POST">
+          <form action= "/urls/<%= shortURL %>?_method=PUT" method="POST">
             <input id=updateURL type="text" name=updateURL placeholder="http://" style="width: 300px">
             <button type="submit" class="btn btn-outline-primary" style="font-family: 'Fjalla One', sans-serif; margin-top:10px">Update</button>
              <br>
