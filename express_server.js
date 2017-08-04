@@ -192,7 +192,7 @@ app.post("/login", (req, res) => {
 
 //Logout and clear cookies
 app.post("/logout", (req, res) => {
-  req.session = null
+  req.session.used_id = null
   res.redirect("/login");
   return;
 });
