@@ -341,6 +341,10 @@ app.put("/urls/:shortURL", (req, res) => {
   let shortURL = req.params.shortURL
   let longURL = req.body.updateURL
 
+   if (!longURL.match(/^https?:\/\//)) {
+      longURL = 'https://' + longURL
+    }
+
   //Login check
   if (!userID) {
    return res.status(401).send('You need to <a href="/login"login</a> 🔒');
@@ -349,7 +353,12 @@ app.put("/urls/:shortURL", (req, res) => {
   if (urlDatabase[shortURL].userID != userID) {
     res.send('Sorry, URL does not belong to you 🙅‍')
   } else {
-    urlDatabase[shortURL]['longURL'] = longURL
+    urlDatabase[req.params.shortURL] = {
+      shortURL: req.params.shortURL,
+      longURL: longURL,
+      userID: req.session.user_id
+  }
+  console.log(urlDatabase)
     res.redirect('/urls')
   }
 
